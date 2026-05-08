@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-i18n-title="docTitlePopup">
 <head>
   <meta charset="UTF-8" />
   <title>Tumata</title>
@@ -9,7 +9,7 @@
   <header>
     <img src="icons/48.png" alt="" width="32" height="32" />
     <div>
-      <strong>Tumata</strong>
+      <strong data-i18n="popupBrand">Tumata</strong>
       <div id="status" class="status">…</div>
     </div>
   </header>
@@ -17,18 +17,19 @@
   <label class="toggle">
     <input type="checkbox" id="enabled" />
     <span class="track"><span class="thumb"></span></span>
-    <span class="label">Active</span>
+    <span class="label" data-i18n="popupToggleLabel">Active</span>
   </label>
 
   <div class="stats">
     <strong id="routedCount">0</strong>
-    <span>files organized</span>
+    <span data-i18n="popupStatsSuffix">files organized</span>
   </div>
 
   <div class="actions">
-    <button id="openOptions" class="btn">Settings &amp; mappings</button>
+    <button id="openOptions" class="btn" data-i18n="popupOpenSettings">Settings &amp; mappings</button>
   </div>
 
+  <script src="i18n.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

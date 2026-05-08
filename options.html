@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-i18n-title="docTitleOptions">
 <head>
   <meta charset="UTF-8" />
   <title>Tumata — Settings</title>
@@ -8,8 +8,8 @@
 <body>
   <main>
     <header>
-      <h1>Tumata</h1>
-      <p class="muted">
+      <h1 data-i18n="headerH1">Tumata</h1>
+      <p class="muted" data-i18n-html="headerSubHtml">
         Automatically routes every download into a <code>Downloads/&lt;category&gt;/</code> subfolder based on its file extension.
       </p>
     </header>
@@ -17,41 +17,52 @@
     <section class="card">
       <label class="row toggle">
         <span>
-          <strong>Enable extension</strong>
-          <span class="muted small">Disable this temporarily without uninstalling the extension.</span>
+          <strong data-i18n="enableLabel">Enable extension</strong>
+          <span class="muted small" data-i18n="enableHint">Disable this temporarily without uninstalling the extension.</span>
         </span>
         <input type="checkbox" id="enabled" />
       </label>
 
       <label class="row">
         <span>
-          <strong>When the destination folder already contains a file with the same name</strong>
+          <strong data-i18n="conflictLabel">When the destination folder already contains a file with the same name</strong>
         </span>
         <select id="conflictAction">
-          <option value="uniquify">Auto-rename to "name (1).ext" (recommended)</option>
-          <option value="overwrite">Overwrite the existing file</option>
-          <option value="prompt">Ask me each time</option>
+          <option value="uniquify"  data-i18n="conflictUniquify">Auto-rename to "name (1).ext" (recommended)</option>
+          <option value="overwrite" data-i18n="conflictOverwrite">Overwrite the existing file</option>
+          <option value="prompt"    data-i18n="conflictPrompt">Ask me each time</option>
+        </select>
+      </label>
+
+      <label class="row">
+        <span>
+          <strong data-i18n="langLabel">Display language</strong>
+          <span class="muted small" data-i18n="langHint">Language used for this settings page and the toolbar popup.</span>
+        </span>
+        <select id="language">
+          <option value="id">Bahasa Indonesia</option>
+          <option value="en">English</option>
         </select>
       </label>
     </section>
 
     <section class="card">
       <div class="card-head">
-        <h2>Extension &rarr; subfolder mappings</h2>
+        <h2 data-i18n="mappingsH2">Extension &rarr; subfolder mappings</h2>
         <div class="actions">
-          <button id="addRow" class="btn">+ Add row</button>
-          <button id="reset"  class="btn ghost">Reset to defaults</button>
+          <button id="addRow" class="btn"        data-i18n="addRowBtn">+ Add row</button>
+          <button id="reset"  class="btn ghost"  data-i18n="resetBtn">Reset to defaults</button>
         </div>
       </div>
-      <p class="muted small">
+      <p class="muted small" data-i18n-html="mappingsHintHtml">
         Subfolders are created inside your <code>Downloads</code> folder &mdash; Chrome does not allow extensions to write outside Downloads.  Leave the subfolder field empty or click delete to disable a row.
       </p>
 
       <table id="mappings">
         <thead>
           <tr>
-            <th style="width: 30%">Subfolder</th>
-            <th>Extensions (comma-separated, no dots required)</th>
+            <th style="width: 30%" data-i18n="thFolder">Subfolder</th>
+            <th data-i18n="thExtensions">Extensions (comma-separated, no dots required)</th>
             <th style="width: 60px"></th>
           </tr>
         </thead>
@@ -60,11 +71,11 @@
     </section>
 
     <section class="card">
-      <h2>Backup / Restore</h2>
-      <p class="muted small">Export every setting to a JSON file, or import a previously exported file.</p>
+      <h2 data-i18n="backupH2">Backup / Restore</h2>
+      <p class="muted small" data-i18n="backupHint">Export every setting to a JSON file, or import a previously exported file.</p>
       <div class="actions">
-        <button id="export" class="btn">Export to JSON</button>
-        <button id="import" class="btn">Import from JSON</button>
+        <button id="export" class="btn" data-i18n="exportBtn">Export to JSON</button>
+        <button id="import" class="btn" data-i18n="importBtn">Import from JSON</button>
         <input type="file" id="importFile" accept="application/json" hidden />
       </div>
     </section>
@@ -72,9 +83,9 @@
     <section class="card stats">
       <div>
         <strong id="routedCount">0</strong>
-        <span class="muted">files have been organized since installation.</span>
+        <span class="muted" data-i18n="statsSuffix">files have been organized since installation.</span>
       </div>
-      <button id="resetStats" class="btn ghost small">Reset counter</button>
+      <button id="resetStats" class="btn ghost small" data-i18n="resetStatsBtn">Reset counter</button>
     </section>
 
     <footer>
@@ -82,6 +93,7 @@
     </footer>
   </main>
 
+  <script src="i18n.js"></script>
   <script src="options.js"></script>
 </body>
 </html>

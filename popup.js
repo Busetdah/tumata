@@ -5,7 +5,7 @@ const $routedCount = document.getElementById("routedCount");
 const $openOptions = document.getElementById("openOptions");
 
 function paintStatus(enabled) {
-  $status.textContent = enabled ? "Active" : "Disabled";
+  $status.textContent = enabled ? i18n.t("popupStatusOn") : i18n.t("popupStatusOff");
   $status.classList.toggle("on", enabled);
 }
 
@@ -40,6 +40,16 @@ chrome.storage.onChanged.addListener((changes, area) => {
     $enabled.checked = v;
     paintStatus(v);
   }
+  if (area === "sync" && changes.language) {
+    i18n.init().then(() => {
+      i18n.applyToDocument();
+      paintStatus($enabled.checked);
+    });
+  }
 });
 
-load();
+(async () => {
+  await i18n.init();
+  i18n.applyToDocument();
+  await load();
+})();

@@ -22,6 +22,7 @@ const DEFAULT_MAPPINGS = [
 
 const $enabled        = document.getElementById("enabled");
 const $conflictAction = document.getElementById("conflictAction");
+const $language       = document.getElementById("language");
 const $tableBody      = document.querySelector("#mappings tbody");
 const $addRow         = document.getElementById("addRow");
 const $reset          = document.getElementById("reset");
@@ -46,7 +47,8 @@ function makeRow(folder = "", extensions = []) {
   const tdFolder = document.createElement("td");
   const inFolder = document.createElement("input");
   inFolder.type = "text";
-  inFolder.placeholder = "e.g. Music";
+  inFolder.placeholder = i18n.t("placeholderFolder");
+  inFolder.dataset.i18nPlaceholder = "placeholderFolder";
   inFolder.value = folder;
   inFolder.addEventListener("input", queueSave);
   tdFolder.appendChild(inFolder);
@@ -54,7 +56,8 @@ function makeRow(folder = "", extensions = []) {
   const tdExts = document.createElement("td");
   const inExts = document.createElement("input");
   inExts.type = "text";
-  inExts.placeholder = "mp3, opus, flac";
+  inExts.placeholder = i18n.t("placeholderExtensions");
+  inExts.dataset.i18nPlaceholder = "placeholderExtensions";
   inExts.value = extensions.join(", ");
   inExts.addEventListener("input", queueSave);
   tdExts.appendChild(inExts);
@@ -62,7 +65,8 @@ function makeRow(folder = "", extensions = []) {
   const tdDel = document.createElement("td");
   const btnDel = document.createElement("button");
   btnDel.className = "btn danger small";
-  btnDel.textContent = "Delete";
+  btnDel.textContent = i18n.t("deleteBtn");
+  btnDel.dataset.i18n = "deleteBtn";
   btnDel.addEventListener("click", () => {
     tr.remove();
     queueSave();
@@ -108,13 +112,14 @@ async function save() {
     conflictAction: $conflictAction.value,
     mappings
   });
-  flash("Saved automatically");
+  flash(i18n.t("statusSaved"));
 }
 
 async function load() {
   const stored = await chrome.storage.sync.get(["enabled", "conflictAction", "mappings"]);
   $enabled.checked = stored.enabled !== false;
   $conflictAction.value = stored.conflictAction || "uniquify";
+  $language.value = i18n.getLanguage();
   const mappings = Array.isArray(stored.mappings) && stored.mappings.length > 0
     ? stored.mappings
     : DEFAULT_MAPPINGS;
@@ -127,6 +132,11 @@ async function load() {
 
 $enabled.addEventListener("change", queueSave);
 $conflictAction.addEventListener("change", queueSave);
+$language.addEventListener("change", async () => {
+  await i18n.setLanguage($language.value);
+  i18n.applyToDocument();
+  flash(i18n.t("statusLanguageChanged"));
+});
 
 $addRow.addEventListener("click", () => {
   const tr = makeRow("", []);
@@ -135,7 +145,7 @@ $addRow.addEventListener("click", () => {
 });
 
 $reset.addEventListener("click", async () => {
-  if (!confirm("Reset every mapping to its default value? Your customisations will be lost.")) return;
+  if (!confirm(i18n.t("confirmReset"))) return;
   renderMappings(DEFAULT_MAPPINGS);
   $enabled.checked = true;
   $conflictAction.value = "uniquify";
@@ -143,7 +153,7 @@ $reset.addEventListener("click", async () => {
 });
 
 $exportBtn.addEventListener("click", async () => {
-  const stored = await chrome.storage.sync.get(["enabled", "conflictAction", "mappings"]);
+  const stored = await chrome.storage.sync.get(["enabled", "conflictAction", "mappings", "language"]);
   const blob = new Blob([JSON.stringify(stored, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -153,7 +163,7 @@ $exportBtn.addEventListener("click", async () => {
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
-  flash("Configuration exported");
+  flash(i18n.t("statusExported"));
 });
 
 $importBtn.addEventListener("click", () => $importFile.click());
@@ -163,16 +173,24 @@ $importFile.addEventListener("change", async (e) => {
   try {
     const text = await file.text();
     const data = JSON.parse(text);
-    if (!Array.isArray(data.mappings)) throw new Error("The 'mappings' field must be an array.");
-    await chrome.storage.sync.set({
+    if (!Array.isArray(data.mappings)) throw new Error(i18n.t("errMappingsArray"));
+    const patch = {
       enabled: data.enabled !== false,
       conflictAction: data.conflictAction || "uniquify",
       mappings: data.mappings
-    });
+    };
+    if (data.language && i18n.AVAILABLE.includes(data.language)) {
+      patch.language = data.language;
+    }
+    await chrome.storage.sync.set(patch);
+    if (patch.language) {
+      await i18n.setLanguage(patch.language);
+      i18n.applyToDocument();
+    }
     await load();
-    flash("Configuration imported");
+    flash(i18n.t("statusImported"));
   } catch (err) {
-    flash("Import failed: " + err.message, true);
+    flash(i18n.t("statusImportFailed") + " " + err.message, true);
   } finally {
     $importFile.value = "";
   }
@@ -181,7 +199,7 @@ $importFile.addEventListener("change", async (e) => {
 $resetStats.addEventListener("click", async () => {
   await chrome.storage.local.set({ routedCount: 0 });
   $routedCount.textContent = "0";
-  flash("Counter reset");
+  flash(i18n.t("statusCounterReset"));
 });
 
 chrome.storage.onChanged.addListener((changes, area) => {
@@ -190,4 +208,8 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
 });
 
-load();
+(async () => {
+  await i18n.init();
+  i18n.applyToDocument();
+  await load();
+})();
