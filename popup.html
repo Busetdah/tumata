@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tumata</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header>
+    <img src="icons/48.png" alt="" width="32" height="32" />
+    <div>
+      <strong>Tumata</strong>
+      <div id="status" class="status">…</div>
+    </div>
+  </header>
+
+  <label class="toggle">
+    <input type="checkbox" id="enabled" />
+    <span class="track"><span class="thumb"></span></span>
+    <span class="label">Active</span>
+  </label>
+
+  <div class="stats">
+    <strong id="routedCount">0</strong>
+    <span>files organized</span>
+  </div>
+
+  <div class="actions">
+    <button id="openOptions" class="btn">Settings &amp; mappings</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
