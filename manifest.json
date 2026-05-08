@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Tumata",
+  "version": "1.0.0",
+  "description": "Tumata — auto-organize your downloads into smart subfolders by file type.",
+  "permissions": [
+    "downloads",
+    "storage"
+  ]
+}
