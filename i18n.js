@@ -58,7 +58,9 @@
       popupStatusOff: "Disabled",
       popupToggleLabel: "Active",
       popupStatsSuffix: "files organized",
-      popupOpenSettings: "Settings & mappings"
+      popupOpenSettings: "Settings & mappings",
+
+      creditMadeBy: "Made by"
     },
 
     id: {
@@ -118,7 +120,9 @@
       popupStatusOff: "Nonaktif",
       popupToggleLabel: "Aktif",
       popupStatsSuffix: "berkas telah dirapikan",
-      popupOpenSettings: "Pengaturan & pemetaan"
+      popupOpenSettings: "Pengaturan & pemetaan",
+
+      creditMadeBy: "Dibuat oleh"
     }
   };
 

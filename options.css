@@ -182,8 +182,16 @@ footer {
   position: fixed;
   bottom: 0; left: 0; right: 0;
   padding: 10px 20px;
-  text-align: center;
   background: linear-gradient(to top, var(--bg) 0%, var(--bg) 60%, transparent 100%);
+}
+.footer-row {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 .status {
   font-size: 13px;
@@ -193,3 +201,13 @@ footer {
 }
 .status.show { opacity: 1; }
 .status.error { color: var(--danger); }
+
+.credit {
+  font-size: 12px;
+  color: var(--muted);
+}
+.credit a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.credit a:hover { text-decoration: underline; }
